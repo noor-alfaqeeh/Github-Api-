@@ -1,26 +1,47 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from 'react';
+import 'bootstrap/dist/css/bootstrap.css';
+import Header from './components/header';
+import UserForm from './components/userform';
+import axios from 'axios';
+import UserDetails from './components/userDetails'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+//https://api.github.com/users/noor
+class App extends Component {
+  state = { 
+    
+  users:null
+
+   }
+
+
+getUser = (e) => {
+  e.preventDefault();
+  const user = e.target.elements.username.value;
+  axios.get(`https://api.github.com/users/${user}`)
+  .then((result) => {
+    this.setState({
+  
+      users:result.data
+    })
+  })
 }
 
+
+
+
+
+
+
+  render() { 
+    return ( 
+      <div className='container-fluid'>
+        <Header/>
+        <UserForm getUser={this.getUser} />
+        <UserDetails user1={this.state.users} />
+
+      </div>
+     );
+  }
+}
+ 
 export default App;
